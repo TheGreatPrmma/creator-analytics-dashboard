@@ -1,8 +1,7 @@
 appearance:
   default: light
   switcher: false
-  showQuery: false
-
+ 
 theme:
   colorPalettes:
     default:
