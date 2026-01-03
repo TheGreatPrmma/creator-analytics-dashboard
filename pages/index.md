@@ -1,12 +1,10 @@
 <h1 align="center" style="font-size: 2.25rem; font-weight: 700;">
-  Creator Analytics Dashboard by Data 123
+  Influencers Analytics Dashboard
 </h1>
-
-
 
 <Details title='Overview'>
 
-  This dashboard provides a high-level view of creator content performance, engagement efficiency, and quality trends across content types from 2019–2021. The data is sourced from data123.online. 
+  This dashboard provides a high-level view of creator content performance, engagement efficiency, and quality trends across content types from 2019–2021. 
 </Details>
 
 ```sql social_media_data
@@ -20,7 +18,6 @@ SELECT
     rating
 FROM creator_data.creator_analytics
 ```
-
 
 ```sql kpis
 SELECT
@@ -37,8 +34,6 @@ FROM ${social_media_data}
   FROM creator_data.creator_analytics
   group by content_type
 ```
-
-
 
 ```sql monthly_earnings_by_type
   select 
@@ -130,69 +125,92 @@ SELECT * FROM top_bottom
 ORDER BY category DESC, earnings_rating_product DESC
 ```
 <Grid cols=4 gap=6>
-  <!-- Total Earnings -->
-  <div style="
-      border: 1px solid rgba(150,150,150,0.5);
-      background-color: #E67E22;  /* Burnt Orange */
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  ">
-    <BigValue data={kpis} value=total_earnings />
-  </div>
+ <!-- Total Earnings -->
+<div style="
+    border: 1px solid rgba(150,150,150,0.5);
+    background-color: #E67E22;
+    padding: 1rem;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.15);
+">
+  <BigValue 
+    data={kpis} 
+    value=total_earnings 
+    fmt=usd
+  />
+</div>
 
-  <!-- Total Shares -->
-  <div style="
-      border: 1px solid rgba(150,150,150,0.5);
-      background-color: #F1C40F;  /* Sunny Yellow */
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  ">
-    <BigValue data={kpis} value=total_shares />
-  </div>
+<!-- Total Shares -->
+<div style="
+    border: 1px solid rgba(150,150,150,0.5);
+    background-color: #F1C40F;
+    padding: 1rem;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.15);
+">
+  <BigValue 
+    data={kpis} 
+    value=total_shares 
+    fmt='#,##0'
+  />
+</div>
 
-  <!-- Total Likes -->
-  <div style="
-      border: 1px solid rgba(150,150,150,0.5);
-      background-color: #7DCE82;  /* Sage Green */
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  ">
-    <BigValue data={kpis} value=total_likes />
-  </div>
+<!-- Total Likes -->
+<div style="
+    border: 1px solid rgba(150,150,150,0.5);
+    background-color: #7DCE82;
+    padding: 1rem;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.15);
+">
+  <BigValue 
+    data={kpis} 
+    value=total_likes 
+    fmt='#,##0'
+  />
+</div>
 
-  <!-- Average Rating -->
-  <div style="
-      border: 1px solid rgba(150,150,150,0.5);
-      background-color: #B0B0B0;  /* Earthy Brown */
-      padding: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  ">
-    <BigValue data={kpis} value=avg_rating />
-  </div>
+<!-- Average Rating -->
+<div style="
+    border: 1px solid rgba(150,150,150,0.5);
+    background-color: #B0B0B0;
+    padding: 1rem;
+    box-shadow: 4px 6px 12px rgba(0,0,0,0.15);
+">
+  <BigValue 
+    data={kpis} 
+    value=avg_rating 
+  />
+</div>
+
 </Grid>
 
 
+<div style="height: 2rem;"></div>
+<!-- Chart Title -->
+<h3 style="font-weight: 700">
+    Earning by Content Type: {inputs.content_type.label}
+</h3>
 
-<Dropdown data={categories} name=content_type value=content_type>
-    <DropdownOption value="%" valueLabel="All Content"/>
-</Dropdown>
+<!-- Filters -->
+<div>
+    <Dropdown data={categories} name=content_type value=content_type>
+        <DropdownOption value="%" valueLabel="All Content"/>
+    </Dropdown>
 
-<Dropdown name=year>
-    <DropdownOption value=% valueLabel="All Years"/>
-    <DropdownOption value=2019/>
-    <DropdownOption value=2020/>
-    <DropdownOption value=2021/>
-</Dropdown>
+    <Dropdown name=year>
+        <DropdownOption value=% valueLabel="All Years"/>
+        <DropdownOption value=2019/>
+        <DropdownOption value=2020/>
+        <DropdownOption value=2021/>
+    </Dropdown>
+</div>
 
+<!-- Chart -->
 <BarChart
     data={monthly_earnings_by_type}
-    title="Earning by Type, {inputs.content_type.label}"
     x=month
     y=earnings
     series=content_type
     yFmt=usd
 />
-
 
 <Grid cols=2>
     <ECharts
